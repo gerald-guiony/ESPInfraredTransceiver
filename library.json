@@ -1,0 +1,24 @@
+{
+  "name": "ESPInfraredTransceiver",
+  "keywords": "infrared, ir, remote, transceiver",
+  "description": "Esp8266 library for record, store and replay infrared signals",
+  "authors":
+  {
+    "name": "Gérald GUIONY",
+    "url": "http://wpsm.free.fr"
+  },
+  "repository": {
+        "type": "git",
+        "url": "https://github.com/gguiony/InfraredTransceiver.git"
+  },
+  "version": "3.2",
+  "frameworks": "arduino",
+  "platforms": "*",
+  "dependencies": [
+    {
+      "name": "ESPCoreExtension",
+      "version": "3.2",
+      "platforms": "espressif8266"
+    }
+  ]
+}
