@@ -1,7 +1,7 @@
 {
   "name": "ESPInfraredTransceiver",
   "keywords": "infrared, ir, remote, transceiver",
-  "description": "Esp8266 library for record, store and replay infrared signals",
+  "description": "Esp8266 library to record, store and replay infrared signals",
   "authors":
   {
     "name": "Gérald GUIONY",
