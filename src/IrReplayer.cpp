@@ -16,11 +16,11 @@ SINGLETON_IMPL (IrReplayer)
 //========================================================================================================================
 bool IrReplayer :: recordSignal (Print & out, IRPACKET & irPacket) {
 
-	I(EnergySaver).setModulesPower(true);
+	setModulesPower(true);
 	{
 		_irTransceiver->recordRaw (irPacket);
 	}
-	I(EnergySaver).setModulesPower(false);
+	setModulesPower(false);
 
 	if (irPacket.length < 1) {
 		out << F("No captured InfraRed signal, please try again") << LN;
@@ -40,12 +40,12 @@ bool IrReplayer :: emmitSignal (Print & out, IRPACKET & irPacket) {
 
 	if (irPacket.length > 0) {
 
-		I(EnergySaver).setModulesPower(true);
+		setModulesPower(true);
 		{
 			// Assume 38 KHz
 			_irTransceiver->sendRaw (irPacket, 38);
 		}
-		I(EnergySaver).setModulesPower(false);
+		setModulesPower(false);
 		
 		// Visual indicator that signal sent
 		blinkStatus (irPacket.length / 50);
