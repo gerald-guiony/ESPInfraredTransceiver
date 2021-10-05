@@ -92,7 +92,7 @@ bool IrPacketStorage :: remove (uint8_t fileId)
 	String filename = F(IR_HEADER_NAMEFILE);
 	filename += fileId;
 	filename += F(IR_EXT_NAMEFILE);
-	
+
 	return SPIFFS.remove (filename);
 }
 
@@ -102,14 +102,14 @@ bool IrPacketStorage :: remove (uint8_t fileId)
 String IrPacketStorage :: getList ()
 {
 	FileStorage::spiffsListFiles ();
-	
+
 	String result = "";
 	Dir dir = SPIFFS.openDir("/");
 	while (dir.next()) {
 		String filename = dir.fileName();
 		if (filename.indexOf (F(IR_HEADER_NAMEFILE)) == 0) {
 			int lasti = filename.indexOf (F(IR_EXT_NAMEFILE));
-			if (lasti > 0) { 
+			if (lasti > 0) {
 				if (result.length()>0) {
 					result += MSG_SEPARATOR_PARAM + filename.substring (strlen(IR_HEADER_NAMEFILE), lasti);
 				}

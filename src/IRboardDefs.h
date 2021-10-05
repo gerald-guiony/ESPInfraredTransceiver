@@ -11,7 +11,7 @@
 // https://www.arduino.cc/en/Tutorial/PWM
 // https://www.arduino.cc/en/Tutorial/SecretsOfArduinoPWM
 // https://techtutorialsx.com/2016/09/11/esp8266-using-the-pwm-technique/
-// 
+//
 //******************************************************************************
 
 #pragma once
@@ -81,7 +81,7 @@
 || defined(__AVR_ATmega164P__)
 	//#define IR_USE_TIMER1   // tx = pin 13
 	#define IR_USE_TIMER2     // tx = pin 14
-	
+
 //MegaCore - ATmega64, ATmega128
 #elif defined(__AVR_ATmega64__) || defined(__AVR_ATmega128__)
  	#define IR_USE_TIMER1     // tx = pin 13

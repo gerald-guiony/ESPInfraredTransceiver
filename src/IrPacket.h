@@ -19,7 +19,7 @@
 
 /**
  * Packet printable
- */ 
+ */
 #define PRINT_IR_RAW_BEGIN					"["
 #define PRINT_IR_RAW_HEADER_BEGIN			"Raw ("
 #define PRINT_IR_RAW_HEADER_END				") "
@@ -30,7 +30,7 @@
 
 /**
  * Class: IRPACKET
- * 
+ *
  * Description:
  * Infrared data packet class
  */

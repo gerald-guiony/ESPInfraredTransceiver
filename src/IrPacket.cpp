@@ -16,9 +16,9 @@
 //
 //========================================================================================================================
 bool IRPACKET :: _printTo (Print & p) const {
-	
+
 	bool isValid = (0 < length) && (length <= IR_MAX_LEN);
-	
+
 	if (isValid) {
 
 		p << F(PRINT_IR_RAW_BEGIN);
@@ -30,10 +30,10 @@ bool IRPACKET :: _printTo (Print & p) const {
 			if (i & 0x1) p << F(PRINT_IR_RAW_MARKSPACE);
 			p << data[i];
 		}
-		
+
 		p << F(PRINT_IR_RAW_END);
 	}
-	
+
 	return isValid;
 }
 
@@ -41,7 +41,7 @@ bool IRPACKET :: _printTo (Print & p) const {
 //
 //========================================================================================================================
 size_t IRPACKET :: _printSize () const {
-	
+
 	class PrintCounter : public Print {
 	public:
 		size_t _counter = 0;
@@ -49,7 +49,7 @@ size_t IRPACKET :: _printSize () const {
 			_counter++;
 		}
 	};
-	
+
 	PrintCounter printCounter;
 	if (_printTo (printCounter)) {
 		return printCounter._counter;
@@ -73,13 +73,13 @@ size_t IRPACKET :: printTo (Print & p) const {
 //
 //========================================================================================================================
 bool IRPACKET :: parse (Stream & stream, Print & out) {
-	
+
 	if (!StreamParser::checkNextStrInStream (stream, PRINT_IR_RAW_BEGIN))
 	{
 		out << F("Malformatted begin! ABORTED!!") << LN;
 		return false;
 	}
-	
+
 	if (!StreamParser::checkNextStrInStream (stream, PRINT_IR_RAW_HEADER_BEGIN))
 	{
 		out << F("Malformatted header begin! ABORTED!!") << LN;
@@ -107,7 +107,7 @@ bool IRPACKET :: parse (Stream & stream, Print & out) {
 		{
 			out << F("Malformatted separator! ABORTED!!") << LN;
 			goto ERROR;
-		}	
+		}
 
 		if (i & 0x1)
 		{
@@ -120,7 +120,7 @@ bool IRPACKET :: parse (Stream & stream, Print & out) {
 
 		data[i] = (uint16_t) stream.parseInt();
 	}
-	
+
 	if (!StreamParser::checkNextStrInStream (stream, PRINT_IR_RAW_END))
 	{
 		out << F("Malformatted end! ABORTED!!") << LN;

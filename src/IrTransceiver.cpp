@@ -30,7 +30,7 @@ IrTransceiver :: IrTransceiver (uint8_t sendPin, uint8_t recvPin) :
 // Custom delay function that circumvents Arduino's delayMicroseconds limit
 // (the largest value that will produce an accurate delay is 16383 !!)
 //========================================================================================================================
-void IrTransceiver :: custom_delay_usec (unsigned long uSecs) 
+void IrTransceiver :: custom_delay_usec (unsigned long uSecs)
 {
 /* 	if (uSecs > 4) {
 		unsigned long start = micros();										// On 16 MHz Arduino boards (e.g. Duemilanove and Nano), this function has a resolution of 4 microseconds (i.e. the value returned is always a multiple of four)
@@ -42,7 +42,7 @@ void IrTransceiver :: custom_delay_usec (unsigned long uSecs)
 	} */
 
 	static unsigned long time;
-	
+
 	time = uSecs;
 	while (time > 16383) {													// delayMicroseconds is only accurate to 16383us.
 		delayMicroseconds (16383);
@@ -63,7 +63,7 @@ void IrTransceiver :: mark (uint16_t time)
 /*	// PWMRANGE is equal to 1023 by default for ESP8266 and 255 for Arduino
 	analogWrite (IR_SEND_PIN, ((pwmRange+1) >> 1));							// (PWMRANGE >> 1) PWMRANGE divise par 2 => 50% de PWMRANGE, Half periodic time
 	//delayMicroseconds(time);												// the largest value that will produce an accurate delay is 16383 !!
-	custom_delay_usec(time);	
+	custom_delay_usec(time);
 */
 
 // Version 2
@@ -122,25 +122,25 @@ void IrTransceiver :: enableIROut (int khz)
 	pinMode (_sendPin, OUTPUT);
 	analogWrite (_sendPin, 0);
 	digitalWrite (_sendPin, LOW);
-	
+
 	// --------------------------------- Analog output ---------------------------------------------
-	// analogWrite(pin, value) enables software PWM on the given pin. PWM may be used on pins 0 to 16. 
-	// Call analogWrite(pin, 0) to disable PWM on the pin. value may be in range from 0 to PWMRANGE, 
+	// analogWrite(pin, value) enables software PWM on the given pin. PWM may be used on pins 0 to 16.
+	// Call analogWrite(pin, 0) to disable PWM on the pin. value may be in range from 0 to PWMRANGE,
 	// which is equal to 1023 by default. PWM range may be changed by calling analogWriteRange(new_range).
 	// PWM frequency is 1kHz by default. Call analogWriteFreq(new_frequency) to change the frequency.
 	//
-	// You can set the PWM-frequency higher or lower if you wish with AnalogWriteFreq(), but if you set 
+	// You can set the PWM-frequency higher or lower if you wish with AnalogWriteFreq(), but if you set
 	// it to 10KHz or more you should drop range to 8-bit values to speed the code up, ie. AnalogWriteRange(255)
-	
+
 	// https://github.com/StefanBruens/ESP8266_new_pwm
 
-// Version 1 
+// Version 1
 /*	analogWriteRange (pwmRange);
 	analogWriteFreq (khz * 1000); 											// PWM frequency is 1kHz by default
 */
 
 // Version 2
-	// The khz value controls the modulation frequency in kilohertz.	
+	// The khz value controls the modulation frequency in kilohertz.
 	// T = 1/f but we need T/2 in microsecond and f is in kHz
 	halfPeriodicTime = 500 / khz;
 
@@ -183,7 +183,7 @@ void IrTransceiver :: sendRaw (IRPACKET & irPacket, unsigned int hz)
 	irBufferPtrMax	= irBufferPtr + irPacket.length;
 
 	enableIROut(hz);														// Set IR carrier frequency
-	
+
 	ESP.wdtDisable();														// Disable the software watchdog (https://techtutorialsx.com/2017/01/21/esp8266-watchdog-functions/)
 	noInterrupts();															// Some functions will not work while interrupts are disabled, and incoming communication may be ignored. Interrupts can slightly disrupt the timing of code, however, and may be disabled for particularly critical sections of code.
 	{
@@ -199,7 +199,7 @@ void IrTransceiver :: sendRaw (IRPACKET & irPacket, unsigned int hz)
 
 		space(0);															// Always end with the LED off
 	}
-	interrupts();															// Re-enables interrupts (after they've been disabled by noInterrupts()). Interrupts allow certain important tasks to happen in the background and are enabled by default. 
+	interrupts();															// Re-enables interrupts (after they've been disabled by noInterrupts()). Interrupts allow certain important tasks to happen in the background and are enabled by default.
 	ESP.wdtEnable(0);														// Re-enable the software watchdog (The ‘0’ is an arbitrary number that is required but not used)
 }
 
@@ -229,21 +229,21 @@ void _ISR_ir_recv_pin () {
 #endif
 
 	if (irBufferPtr >= irBufferPtrMax) return;								// ignore if irBuffer is already full
-	
-	// micros () : Returns the number of microseconds since the Arduino board began running the current program. This number 
-	// will overflow (go back to zero), after approximately 70 minutes. On 16 MHz Arduino boards (e.g. Duemilanove and Nano), 
-	// this function has a resolution of four microseconds (i.e. the value returned is always a multiple of four). On 8 MHz 
+
+	// micros () : Returns the number of microseconds since the Arduino board began running the current program. This number
+	// will overflow (go back to zero), after approximately 70 minutes. On 16 MHz Arduino boards (e.g. Duemilanove and Nano),
+	// this function has a resolution of four microseconds (i.e. the value returned is always a multiple of four). On 8 MHz
 	// Arduino boards (e.g. the LilyPad), this function has a resolution of eight microseconds.
-	
+
 	currentMicros = micros();												// just continually record the time-stamp of signal transitions
 	if (lastMicros)															// not the first value !
 	{
 		*irBufferPtr = currentMicros - lastMicros;							// Elapsed time (WARNING : unsigned long caste en unsigned int !!!)
-		irBufferPtr++; 
+		irBufferPtr++;
 	}
 	lastMicros = currentMicros;
-	
-	// Uncomment to check the amount of time of this method :) => I found 8 micro secondes with div4 = false!! 
+
+	// Uncomment to check the amount of time of this method :) => I found 8 micro secondes with div4 = false!!
 	// irBuffer[irBufferLen-1] = micros() - currentMicros;
 }
 
@@ -258,7 +258,7 @@ void IrTransceiver :: recordRaw (IRPACKET & irPacket, unsigned int delayMs /*= I
 	irBufferPtr		= &(irPacket.data[0]);
 	irBufferPtrMax	= irBufferPtr + IR_MAX_LEN;
 
-	// ---------------------------------------------------------------------	
+	// ---------------------------------------------------------------------
 
 	pinMode (_recvPin, INPUT);
 
@@ -266,26 +266,26 @@ void IrTransceiver :: recordRaw (IRPACKET & irPacket, unsigned int delayMs /*= I
 //	noInterrupts();															// Some functions will not work while interrupts are disabled, and incoming communication may be ignored. Interrupts can slightly disrupt the timing of code, however, and may be disabled for particularly critical sections of code.
 	{
 		byte interruptNumber = digitalPinToInterrupt(_recvPin);				// WARNING : 2 and 3 are the digital pins usable for Interrupts for boards Uno, Nano, Mini, other 328-based.. but for ESP8266 Interrupts may be attached to any GPIO pin, except GPIO16 :)
-		attachInterrupt(interruptNumber, _ISR_ir_recv_pin, CHANGE);			// set up ISR for receiving IR signal on digital pin 2 
+		attachInterrupt(interruptNumber, _ISR_ir_recv_pin, CHANGE);			// set up ISR for receiving IR signal on digital pin 2
 //		delay(delayMs * 1000);												// pause 5 secs to capture IR signal
 		custom_delay_usec (delayMs * 1000);									// Can not use yield or delay or any function that uses them inside the callbacks of ESPAsyncWebServer..
 		detachInterrupt(interruptNumber);									// stop interrupts & capture until finished here
 	}
-//	interrupts();															// Re-enables interrupts (after they've been disabled by noInterrupts()). Interrupts allow certain important tasks to happen in the background and are enabled by default. 
+//	interrupts();															// Re-enables interrupts (after they've been disabled by noInterrupts()). Interrupts allow certain important tasks to happen in the background and are enabled by default.
 	ESP.wdtEnable(0);														// Re-enable the software watchdog (The ‘0’ is an arbitrary number that is required but not used)
-		
+
 	// ---------------------------------------------------------------------
 
 	irPacket.length = irBufferPtr - &(irPacket.data[0]);					// Update recorded signal length
 
 	if (irPacket.length < IR_MIN_LEN) irPacket.length = 0;					// Check if the captured signal is light noise..
-	
+
 	if (irPacket.length > 1) {												// if a signal is captured
 		if (!(irPacket.length & 0x1)) {										// irPacket.length doit etre impair si ce n'est pas le cas c'est que la premiere valeur correspond a du bruit "lumineux"...
 			irPacket.length--;
 			memmove (
-				irPacket.data, 
-				&(irPacket.data[1]), 
+				irPacket.data,
+				&(irPacket.data[1]),
 				irPacket.length * sizeof(uint16_t));
 		}
 	}

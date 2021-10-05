@@ -36,7 +36,7 @@ private:
 
 private:
 	static void custom_delay_usec	(unsigned long uSecs);
-	
+
 	void mark				(uint16_t time);
 	void space				(uint16_t time);
 	void enableIROut		(int khz);

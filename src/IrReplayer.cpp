@@ -28,7 +28,7 @@ bool IrReplayer :: recordSignal (Print & out, IRPACKET & irPacket) {
 	}
 
 	blinkStatus (irPacket.length / 50);
-	
+
 	out << F("SUCCESS! InfraRed signal captured (") << irPacket.length << " words)" << LN;
 	return true;
 }
@@ -46,7 +46,7 @@ bool IrReplayer :: emmitSignal (Print & out, IRPACKET & irPacket) {
 			_irTransceiver->sendRaw (irPacket, 38);
 		}
 		setModulesPower(false);
-		
+
 		// Visual indicator that signal sent
 		blinkStatus (irPacket.length / 50);
 
