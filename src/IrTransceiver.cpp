@@ -8,8 +8,8 @@
 
 
 #ifdef ESP8266
-	unsigned int pwmRange = PWMRANGE;										// 1023 by default
-	//unsigned int pwmRange = 255;											// Force to 255 to speed the code up
+	unsigned int pwmRange = 1023;										// PWMRANGE = 1023 by default
+	//unsigned int pwmRange = 255;										// Force to 255 to speed the code up
 
 	unsigned int halfPeriodicTime;
 
@@ -223,7 +223,7 @@ void IrTransceiver :: sendRaw (IRPACKET & irPacket, unsigned int hz)
 // the loop() check and clear that flag, and execute code
 //========================================================================================================================
 #ifdef ESP8266
-void ICACHE_RAM_ATTR _ISR_ir_recv_pin () {
+void IRAM_ATTR _ISR_ir_recv_pin () {
 #else
 void _ISR_ir_recv_pin () {
 #endif
