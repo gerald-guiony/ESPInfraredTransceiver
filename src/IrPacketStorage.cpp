@@ -22,7 +22,7 @@ bool IrPacketStorage :: read (uint8_t fileId, IRPACKET & irPacket)
 	filename += fileId;
 	filename += F(IR_EXT_NAMEFILE);
 
-	File f = SPIFFS.open(filename, "r");
+	File f = LittleFS.open(filename, "r");
 	if (!f) {
 		Logln(F("Warning : Can't open the file : ") << filename);
 		return false;
@@ -62,7 +62,7 @@ bool IrPacketStorage :: write (uint8_t fileId, const IRPACKET & irPacket)
 	filename += fileId;
 	filename += F(IR_EXT_NAMEFILE);
 
-	File f = SPIFFS.open(filename, "w");
+	File f = LittleFS.open(filename, "w");
 	if (!f) {
 		Logln(F("ERROR : Can't open the file : ") << filename);
 		return false;
@@ -93,7 +93,7 @@ bool IrPacketStorage :: remove (uint8_t fileId)
 	filename += fileId;
 	filename += F(IR_EXT_NAMEFILE);
 
-	return SPIFFS.remove (filename);
+	return LittleFS.remove (filename);
 }
 
 //========================================================================================================================
@@ -104,7 +104,7 @@ String IrPacketStorage :: getList ()
 	FileStorage::spiffsListFiles ();
 
 	String result = "";
-	Dir dir = SPIFFS.openDir("/");
+	Dir dir = LittleFS.openDir("/");
 	while (dir.next()) {
 		String filename = dir.fileName();
 		if (filename.indexOf (F(IR_HEADER_NAMEFILE)) == 0) {
