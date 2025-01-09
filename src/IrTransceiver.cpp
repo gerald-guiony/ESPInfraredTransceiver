@@ -7,15 +7,12 @@
 #include "IrTransceiver.h"
 
 
-#ifdef ESP8266
-	unsigned int pwmRange = 1023;										// PWMRANGE = 1023 by default
-	//unsigned int pwmRange = 255;										// Force to 255 to speed the code up
-
-	unsigned int halfPeriodicTime;
-
-#else
-	unsigned int pwmRange = 255;
-#endif
+// #ifdef ESP8266
+// 	unsigned int pwmRange = 1023;										// PWMRANGE = 1023 by default
+// 	//unsigned int pwmRange = 255;										// Force to 255 to speed the code up
+// #else
+// 	unsigned int pwmRange = 255;
+// #endif
 
 
 //========================================================================================================================
@@ -73,9 +70,9 @@ void IrTransceiver :: mark (uint16_t time)
 	unsigned long endMicros = start + time;
 	while (micros() < endMicros) {
 		digitalWrite (_sendPin, HIGH);
-		delayMicroseconds (halfPeriodicTime);
+		delayMicroseconds (_halfPeriodicTime);
 		digitalWrite (_sendPin, LOW);
-		delayMicroseconds (halfPeriodicTime);
+		delayMicroseconds (_halfPeriodicTime);
 	}
 
 #else
@@ -142,7 +139,7 @@ void IrTransceiver :: enableIROut (int khz)
 // Version 2
 	// The khz value controls the modulation frequency in kilohertz.
 	// T = 1/f but we need T/2 in microsecond and f is in kHz
-	halfPeriodicTime = 500 / khz;
+	_halfPeriodicTime = 500 / khz;
 
 #else
 	// Disable the Timer2 Interrupt (which is used for receiving IR)

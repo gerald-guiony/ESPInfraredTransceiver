@@ -34,6 +34,8 @@ private:
 	uint8_t _sendPin;
 	uint8_t _recvPin;
 
+	unsigned int _halfPeriodicTime;
+
 private:
 	static void custom_delay_usec	(unsigned long uSecs);
 

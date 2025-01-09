@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<!-- 
+//- Symbols des buttons												: http://emojipedia.org/symbols/
+//- Icon de la page HTML											: http://faviconit.com/fr, http://www.motobit.com/util/base64-decoder-encoder.asp
+//- Ajax															: http://startingelectronics.org/tutorials/arduino/ethernet-shield-web-server-tutorial/web-server-read-switch-using-AJAX/
+//- Emulate your site across different screen sizes and resolutions	: https://developers.google.com/web/tools/chrome-devtools/device-mode/
+//- Fast Loading													: http://tutorials.jenkov.com/responsive-mobile-friendly-web-design/fast-loading-websites.html
+//- Minimiser HTML													: https://kangax.github.io/html-minifier/
+-->
+<html>
+	<head>
+		<!-- Trop lourd...
+		<link href="data:image/x-icon;base64,
+		iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAFzUkdC
+		AK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE
+		AP8A/wD/oL2nkwAAAAlwSFlzAAALEgAACxIB0t1+/AAAB45JREFUWMO9V0lvI8cV1q8MghziJQiy
+		XILcg6zHJIARA4kxQC5GDgbiMTAGJvAs1kaNZrSMREriTnZzafa+cemm2NuXr6pbiydxTlYOn6pY
+		9d6rr977XpHa2v9qD2+2D2GpOiw9wng8x2T0QGBs24jgKDMc7byBOHvr4HkNK38F1XLRGDzGUPsb
+		RtO/PAA+hqJ9gjrPGCyWWC8iHL58ha3G4Vuo5gJH7d8C+AEKfMDxh8R73yHKeAU+BIrv48B5hHEM
+		tN68xdbl63M0FAVj5xc0+gny/GcoiodBXvycZ3wIdf1rNMICncOzksCVOsLY/SU3f0zDn0oiD4EC
+		IvYHUK5/j8sQdwQuFfX/SmC4+R0uJIFzEuCfRl/FyKtKINKFh0FZgh9B2fwGF0GBriBwQRG2FRst
+		7VelCIv3Ob7/HYvwPRmzkHG/h0b8V3QDoHtwiq2TvWOkQYTz0QDN+AvMko+gp38i/lyN34LkHfwv
+		W8YypM9HaK0f4yR0kS1TNGrUwPHuMfL5EohieEEKzb/GzI+J9X9Au5kHa+hhQmxuIdb+m88dRMwN
+		z0hQLHkeUT94XRLIwiVSP0QRLgA+EHdY3QM/LysIwr7HtbBE4HNN2MTf7luhoG/iBygWCzQOXokS
+		nCD1ApkFsbnxLCSei5ykitU12a6B1YYk57j2TESui2Qe8XNI0j4yARLPwxXywELhm9IXt77XZSyu
+		F77Fc2g3pz0v0Dg4ZAaogYwEEtPAyjLxuRriUS+CYdtIjBmKgOQ4Xmk+HvVDfKpGUGwTGe1FkNzz
+		sNYNZsTEycTHiwnVFdiIZzrHoBodNEYOOgaJeba0L+hbr72qNOCFWE9H0DtNWDMbjm5j1m1hNR5K
+		hyUFOu12uO4gnJkwOpdYa1MUns9APqLJCGanBXMaYDbzYdF2Nal8GcPqdWDoLhxtTrs24umYhP0b
+		AkeSgGC51hQEvQZxTkJNFPYQudnnOMB60obfvYDfq+Pa6DKAK28owXlc+Ybcj6ctoPIVYzxpca9e
+		xtU7JG3TL2QX3GaAQZjKgpDiIjtQB/Cc8iAx92/gy7RnDlvJ8W6Ry2zc+N/3dUoIodK34Lzwyji3
+		BESAlEFTCiZdJbJHs2WG1GVnuHSi8FIekC43FGYikUUZspVAKuc555C+GUVMkdEPws9l3OW1jJmL
+		fXGGyLh7j0BiLxi0YBvGSCmwhCioarGWO1S5y7bhQWD7rIwpYpsiEi0XFwQft3nCNRumPmMniFig
+		T0hfZkb48ft/44xoM6u6i3FdtuH+AbaOdo7IcoHYYF1cC19NYmxr7FnHQGTasiyiRCuKD4GBL7oR
+		GtaaXTDlTQO2LW9jajg3V/hEZdv5DiLaipKILKwtB6mlYxp46HsiroXIMKUG6jcEElEC16ZauzBG
+		U5iqwXkPievwFgRTGRs6zF4f/sSEq2hwB0NmiZkJfc77sJURgolBmx5itqgoW8aspKy31RvA40++
+		YGzIGBvbkvu3BDYmRcJgOYWxns0kRHuBj01mWQSzM+fDQ+GtNI1K1uXht13A21xzbTXVmHoKbD6X
+		h2emJfcLCjBmzIi+QsAibs79+j41cEQNbEyRfqrT9SQRhJ6cS/GZpoSYS4XzxmA6hcAEigpS5SIj
+		XuVH4onwc5xq35M2N/ZiX2bgRGSA9ReMMsfmr1YNnngB6ShunhgMxJptbIcis/jgKbDMMRbC3hZ+
+		rkTCOgemWq05lZ/IniijhWt7TD2MuV+uCXIlgW1BYIZQHUoBfa2t8II/ncUrFo76NJwwA2O+JwP8
+		nQL8xzjCH5UNvhww0GzAtCuApeFUj/GHbiS/nEKVdTbGvOUEC76iCQmt+CUW8LtGiHPONbFX3+O3
+		4Zu9PX6gw7QN/Yqv4EiFz4ONq1O5lnEvt/uIlAvY7TN4E4W/63twmucoZj0UfNms5hkmFKU5YnZa
+		Z1ipl/QZ0JdC1jowr84oXAU+f3sanK/H5Stb3zsigf1tbCw+rbaClE/sggctlEtkBoM7CgqjXz7H
+		nG8YbD68KA/gWm4NSpgDROoVltxLtDZtVRRi3+jLg0SshdLAYthAOutyn8+0NcT5Pgmc7O7SgASE
+		MYPBVWUAETTXyyASYk6nXOyRTMp5VhEQh/CK0hfCRsQyBhIiLhgL9JP7Yk5CMIZ4WyOB0+0dprFb
+		bdBYkDE7DMSRKZQw74/tao82ZkWct8pZDgEx59dqiVm7Ooxx9QpGBXOI0/03ogt2kDO1uU5DYjHt
+		4tO2hs8HOvaGY3zZn2J3aOKztoNdZYrHPQtPezb+2TFwzoclHXcQ6WM+PhbfhykvOcJnLRsfE09U
+		trDOjOq9d8AykIwkcLy9LRdycQsSiUngjIKpDSdoDFUcD1R0+PK1+L9DlwL9umvgeVfDQV/jP7Js
+		LbUJo9mA2axTgA35XdFhW/fY5zb7PdeHSKmLTOsSHQlxlsjAieiCnacvMTl7zYX+HWxmw+5WY69M
+		uV2VQa5XkCVi6azKT469sjSyPN3q873YotT0mzVOsft0u/zv+MWTZ3j97CWu9nfRrO3gsrb7DVzd
+		w+V+heqzsG/K8Q737d/du6zt4+j5c7x88i/UntXwbwW0iOruunBAAAAAJXRFWHRkYXRlOmNyZWF0
+		ZQAyMDE3LTA1LTA5VDA0OjI1OjI5LTA0OjAwDCvMHAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNy0w
+		NS0wOVQwNDoyNToyOS0wNDowMH12dKAAAAARdEVYdGpwZWc6Y29sb3JzcGFjZQAyLHVVnwAAACB0
+		RVh0anBlZzpzYW1wbGluZy1mYWN0b3IAMXgxLDF4MSwxeDHplfxwAAAAAElFTkSuQmCC"
+		rel="icon" type="image/x-icon" />
+		-->
+		
+		<meta name="Author" content="Gérald Guiony">
+		<meta name="Copyright" content="© Gérald Guiony - tous droits réservés">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta id="viewport" name="viewport">
+		
+		<title>IOT Remote Control</title>
+		
+		<script type="text/javascript">
+		
+			/*
+			// Get Browser-Specifc Prefix
+			function GetBrowserPrefix()
+			{
+				// All the possible prefixes.
+				var browserPrefixes = ['moz', 'ms', 'o', 'webkit'];
+				for (var i = 0; i < browserPrefixes.length; i++) {
+					var prefix = browserPrefixes[i] + 'Hidden';
+					if (prefix in document) {
+						return browserPrefixes[i];
+					}
+				}
+				// Unprefixed property or the API is not supported in browser.
+				return '';
+			}
+ 
+			function OnVisibility()
+			{
+				var prefix = GetBrowserPrefix();
+				document.addEventListener(prefix + 'visibilitychange', function(event) {
+					if (!document[prefix + 'Hidden']) {
+						// The page is visible.
+						RefreshRemoteControl(); // Wake up the IOT :)
+					}
+				});
+			}
+			*/
+		
+			function SetViewport(minWidth)
+			{
+				var windWidth = (window.screen.width < window.screen.height) ? window.screen.width : window.screen.height;
+				var ratio = windWidth / minWidth;
+				document.getElementById('viewport').setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio +', user-scalable=no, width=' + minWidth);
+			}
+		
+			function Substring(str, strStart, strEnd)
+			{
+				var start = str.indexOf(strStart); 
+				var end = str.substring(start).indexOf(strEnd) + start;
+				if ((start >= 0) && (start < end)) {
+					return str.substring(start + strStart.length, end);
+				}
+				return '';
+			}
+			
+			function GetParamValueInString(str, param)
+			{
+				return Substring(str, param + '=', ';');
+			}
+			
+			function PurgeCommentsInString(str)
+			{
+				var result = str;
+				while (true) {
+					var params = Substring(result, '<!--', '-->');
+					if (params.length <= 0) break;
+					result = result.replace('<!--' + params + '-->', '');
+				}
+				return result;
+			}
+			
+			function HighlightBackground(buttonClicked)
+			{
+				if (document.getElementById('slideRecord').checked)
+					document.bgColor = buttonClicked ? 'Red':'pink';
+				else
+					document.bgColor = buttonClicked ? 'Lightblue':'Lightgrey';
+			}
+			
+			function DisableRemoteControl(disableIt)
+			{
+				var inputs = document.getElementsByTagName("input");
+				for (var i = 0; i < inputs.length; i++) {
+					inputs[i].disabled = disableIt;
+				}
+				var buttons = document.getElementsByTagName("button");
+				for (var i = 0; i < buttons.length; i++) {
+					buttons[i].disabled = disableIt;
+				}
+			}
+			
+			function RefreshRemoteControlMessage(msg)
+			{
+				document.getElementById("info_txt").innerHTML = msg;
+			}
+			
+			function BuildQueryString(queryString)
+			{
+				return queryString + "?nocache=" + Math.random() * 1000000;
+			}
+
+			function SendAjaxRequest(queryString, onSuccessCallback, onTimeoutCallback)
+			{
+				var ajaxRequest = false;
+				ajaxRequest = new XMLHttpRequest();
+				if (!ajaxRequest) {
+					// Something went wrong
+					alert("Your browser broke!");
+					return false;
+				}
+				ajaxRequest.timeout = 25000;
+				ajaxRequest.ontimeout = function () { 
+					onTimeoutCallback(ajaxRequest); 
+				}
+				ajaxRequest.onload = function() {
+					onSuccessCallback(ajaxRequest);
+				}
+				ajaxRequest.open("GET", queryString, true);
+				ajaxRequest.send(null);
+			}
+			
+			function TimeoutRemoteControlCallback(ajaxRequest)
+			{
+				HighlightBackground(false);
+				DisableRemoteControl(false);
+				RefreshRemoteControlMessage("No response from the IOT remote control! Timed out..");
+			}
+			
+			function RefreshRemoteControlCallback(ajaxRequest)
+			{
+				if (ajaxRequest.readyState == 4) {
+					if (ajaxRequest.status == 200) {
+						if (ajaxRequest.responseText != null) {
+							var uncheckRecord = GetParamValueInString (ajaxRequest.responseText, "$UNCHECK_RECORD");
+							if (uncheckRecord.length > 0) {
+								document.getElementById('slideRecord').disabled = false;
+								document.getElementById('slideRecord').checked = false;
+							}
+							var refreshTimeout = GetParamValueInString (ajaxRequest.responseText, "$REFRESH_TIMEOUT");
+							if (refreshTimeout.length > 0) {
+								// Rappel de la methode callback au bout de x ms
+								setTimeout("RefreshRemoteControl()", refreshTimeout);
+							}
+							else {
+								// Fin de la sequence
+								HighlightBackground(false);
+								DisableRemoteControl(false);
+							}
+							RefreshRemoteControlMessage(PurgeCommentsInString(ajaxRequest.responseText));
+						}
+					}
+				}
+			}
+			
+			function RefreshRemoteControl()
+			{
+				SendAjaxRequest(BuildQueryString("ajax_RefreshRemoteControl"), RefreshRemoteControlCallback, TimeoutRemoteControlCallback);
+			}
+			
+			function OnRemoteControlButtonClick(numButton)
+			{
+				HighlightBackground(true);
+				DisableRemoteControl(true);
+				
+				RefreshRemoteControlMessage("Please wait...");
+			
+				setTimeout(function(){
+					var queryString = BuildQueryString("ajax_OnRemoteControlButtonClick");
+					queryString += "&numbutton=" + numButton;
+					queryString += "&isRecord=" + document.getElementById('slideRecord').checked;
+					SendAjaxRequest(queryString, RefreshRemoteControlCallback, TimeoutRemoteControlCallback);
+				}, 1000);
+			}
+			
+			function OnRemoteControlSlideClick()
+			{
+				HighlightBackground(false);
+			
+				if (document.getElementById('slideRecord').checked) {
+					DisableRemoteControl(true);
+					SendAjaxRequest(BuildQueryString("ajax_OnRemoteControlSlideClick"), RefreshRemoteControlCallback, TimeoutRemoteControlCallback);
+				}
+				else {
+					RefreshRemoteControlMessage("");
+				}
+			}
+			
+			function Timer() 
+			{
+				var dt=new Date()
+				document.getElementById("monHorloge").innerHTML=dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+				setTimeout("Timer()", 1000);
+			}
+			
+		</script>
+		
+		<style type="text/css">
+
+			body{
+				color: White;
+				font-family: Arial, Georgia, sans-serif;
+				font-weight: normal;
+			}
+			
+			table.remoteControl{
+				background-color: White;
+				background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
+				background-image: linear-gradient(top, #fff, #f4f1ee);
+				border-spacing: 6px 6px; 
+				border-radius: 40px;
+				box-shadow: 0px 4px 6px 0px rgba(0,0,0,.3), inset 0px 2px 1px 1px white, inset 0px -2px 1px 1px rgba(204,198,197,.5);
+				color: #0088cc;
+				margin: 4px 4px 4px 4px;
+				text-shadow: 1px 1px 0px rgba(0,136,204,.15);
+			}
+			table{
+				background-color: White;
+				background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
+				background-image: linear-gradient(top, #fff, #f4f1ee);
+				border-spacing: 2px 2px; 
+				border-radius: 40px;
+				box-shadow: inset 0px 2px 1px 1px rgba(204,198,197,.5), inset 0px -2px 1px 1px white;
+				color: #0088cc;
+				margin: 4px 4px 4px 4px;
+				text-shadow: 1px 1px 0px rgba(0,136,204,.15);
+			}
+			tr{border: 0px solid #000000;}
+			th{border: 0px solid #000000; width: 100px; height: 100px;}
+			
+			textarea{
+				background-color: LightYellow;
+				border: 4px inset lightblue;
+				border-radius: 40px;
+				box-shadow: inset 0px 4px 1px 1px rgba(204,198,197,.5), inset 0px -2px 1px 1px white;
+				font-family: Consolas, Courier, sans-serif;
+				font-weight: normal;
+				font-size: 1.6em;
+				overflow: auto;
+				margin: 10px 4px 10px 4px;
+				padding: 35px 15px 35px 15px;
+				resize: none;
+				text-align: center;
+				vertical-align: middle;
+				width: 350px;
+			}
+			
+			button{
+				background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
+				background-image: linear-gradient(top, #f4f1ee, #fff);
+				border: 0px solid #000000;
+				border-radius: 50%;
+				box-shadow: 0px 4px 6px 0px rgba(0,0,0,.3), inset 0px 2px 1px 1px white, inset 0px -2px 1px 1px rgba(204,198,197,.5);
+				color: #0088cc;
+				float: center;
+				font-size: 1.2em;
+				height: 60px;
+				width: 60px;
+				margin: 0 2px 2px 2px;
+				position: relative;
+				text-shadow: 1px 1px 0px rgba(0,136,204,.15);
+				-webkit-transition: all .1s linear;
+				transition: all .1s linear;
+			}
+			button:hover{
+				background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
+				background-image: linear-gradient(top, #fff, #f4f1ee);
+				color: #00cccc;
+			}
+			button:active{
+				background-image: -webkit-linear-gradient(top, #efedec, #f7f4f4);
+				background-image: linear-gradient(top, #efedec, #f7f4f4);
+				box-shadow: 0 2px 3px 0 rgba(0,0,0,.4), inset 0px -2px 1px 1px rgba(204,198,197,.5);
+			}
+			
+			div.checkBoxSlide {
+				background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
+				background-image: linear-gradient(top, #f4f1ee, #fff);
+				border: 0px solid #000000;
+				border-radius: 50px;
+				box-shadow: inset 0px 2px 1px 1px rgba(204,198,197,.5), inset 0px -2px 1px 1px white;
+				color: #0088cc;
+				font-size: 1.2em;
+				font-weight: normal;
+				height: 30px;
+				width: 110px;
+				margin: 0 2px 2px 2px;
+				position: relative;
+				text-shadow: 1px 1px 0px rgba(0,136,204,.15);
+			}
+			div.checkBoxSlide:after {
+				content: 'OFF';
+				color: $activeColor;
+				position: absolute;
+				top: 4px;
+				right: 10px;
+				z-index: 0;
+			}
+			div.checkBoxSlide:before {
+				content: 'ON';
+				color: #FF0000;
+				position: absolute;
+				top: 4px;
+				left: 10px;
+				z-index: 0;
+			}
+			div.checkBoxSlide label {
+				background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
+				background-image: linear-gradient(top, #f4f1ee, #fff);
+				border-radius: 50px;
+				box-shadow: 0px 4px 6px 0px rgba(0,0,0,.3), inset 0px 2px 1px 1px white, inset 0px -2px 1px 1px rgba(204,198,197,.5);
+				display: block;
+				width: 49px;
+				height: 22px;
+				cursor: pointer;
+				position: absolute;
+				top: 3px;
+				left: 3px;
+				z-index: 1;
+				-webkit-transition: all 0.4s ease;
+				transition: all 0.4s ease;
+			}
+			div.checkBoxSlide input[type=checkbox] {
+				visibility: hidden;
+			}
+			div.checkBoxSlide input[type=checkbox]:checked + label {
+				left: 58px;
+			}
+			p.checkBoxSlideLabel{
+				color: #0088cc; 
+				font-size: 1.2em;
+				font-weight: normal;
+				margin: 4px 4px 4px 4px;
+			}
+			
+		</style>
+	</head>
+
+	<!-- <body onload="Timer(); SetViewport(500); OnVisibility();" bgcolor="Lightgrey"> -->
+	<body onload="Timer(); SetViewport(500);" bgcolor="Lightgrey">
+		<center>
+			<h2>IOT Remote Control</h2>
+			<table class="remoteControl">
+				<tr>
+					<th colspan="4">
+						<textarea id="info_txt" rows="3" readonly></textarea>
+					</th>
+				</tr>
+				<tr>
+					<th colspan="2">
+						<table>
+							<tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(1)">ON</button>
+								</th>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(2)">OFF</button>
+								</th>
+							</tr>
+						</table>
+					</th>
+					<th colspan="2">
+						<table>
+							<tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(3)">☀</button>
+								</th>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(4)">❄</button>
+								</th>
+							</tr>
+						</table>
+					</th>
+				</tr>
+				<tr>
+					<th rowsspan="2">
+						<table>
+							<tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(5)">🔺</button>
+								</th>
+							<tr>
+							</tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(6)">🔻</button>
+								</th>
+							</tr>
+						</table>
+					</th>
+					<th rowsspan="2" colspan="2">
+						<table>
+							<tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(7)">☢</button>
+								</th>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(8)">🔃</button>
+								</th>
+							<tr>
+							</tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(9)">Mode</button>
+								</th>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(10)">🌀</button>
+								</th>
+							</tr>
+						</table>
+					</th>
+					<th rowsspan="2">
+						<table>
+							<tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(11)">+</button>
+								</th>
+							<tr>
+							</tr>
+								<th>
+									<button onclick="OnRemoteControlButtonClick(12)">-</button>
+								</th>
+							</tr>
+						</table>
+					</th>
+				</tr>
+				<tr>
+					<th colspan="2" align="right">
+						<p class="checkBoxSlideLabel">Record IR signal</p>
+					</th>
+					<th colspan="2">
+						<div class="checkBoxSlide">
+							<input id="slideRecord" type="checkbox" name="check" onclick="OnRemoteControlSlideClick()"/>
+							<label for="slideRecord"></label>
+						</div>
+					</th>
+				</tr>
+			</table>
+			<br/>
+			<br/>
+			<div id="monHorloge">...</div>
+		</center>
+	</body>
+</html>
