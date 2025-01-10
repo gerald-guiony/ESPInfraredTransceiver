@@ -32,4 +32,4 @@ To upload this application you must have the latest version of :
 
 ## Board settings
 
-Arduino IDE board settings for my Wio node [here](https://github.com/gerald-guiony/ESPInfraredTransceiver/blob/master/examples/IrRemoteControl/doc/WioNodeBoardSettings.png)
+Board settings in Arduino IDE to upload the sketch with OTA (Over The Air) to my Wio node : [Wio Node board settings](https://github.com/gerald-guiony/ESPInfraredTransceiver/blob/master/examples/IrRemoteControl/doc/WioNodeBoardSettings.png)
