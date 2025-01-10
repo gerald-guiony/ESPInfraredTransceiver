@@ -11,16 +11,8 @@
 //
 #if defined(ARDUINO) && (ARDUINO >= 100)
 #	include <Arduino.h>
-#else
-#	if !defined(IRPRONTO)
-#		include <WProgram.h>
-#	endif
 #endif
 
-//------------------------------------------------------------------------------
-// The ISR header contains several useful macros the user may wish to use
-// All board specific stuff has been moved to its own file, included here.
-#include "IRboardDefs.h"
 #include "IrPacket.h"
 
 #define IR_CAPTURE_DELAY_MS		5000		// you may increase this value for long ir signal

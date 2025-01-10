@@ -7,14 +7,6 @@
 #include "IrTransceiver.h"
 
 
-// #ifdef ESP8266
-// 	unsigned int pwmRange = 1023;										// PWMRANGE = 1023 by default
-// 	//unsigned int pwmRange = 255;										// Force to 255 to speed the code up
-// #else
-// 	unsigned int pwmRange = 255;
-// #endif
-
-
 //========================================================================================================================
 // Constructor
 //========================================================================================================================
@@ -29,15 +21,6 @@ IrTransceiver :: IrTransceiver (uint8_t sendPin, uint8_t recvPin) :
 //========================================================================================================================
 void IrTransceiver :: custom_delay_usec (unsigned long uSecs)
 {
-/* 	if (uSecs > 4) {
-		unsigned long start = micros();										// On 16 MHz Arduino boards (e.g. Duemilanove and Nano), this function has a resolution of 4 microseconds (i.e. the value returned is always a multiple of four)
-		unsigned long endMicros = start + uSecs - 4;
-		if (endMicros < start) { 											// Check if overflow
-			while ( micros() > start ) {} 									// wait until overflow
-		}
-		while ( micros() < endMicros ) {}									// normal wait
-	} */
-
 	static unsigned long time;
 
 	time = uSecs;
@@ -56,16 +39,8 @@ void IrTransceiver :: mark (uint16_t time)
 {
 #ifdef ESP8266
 
-// Version 1
-/*	// PWMRANGE is equal to 1023 by default for ESP8266 and 255 for Arduino
-	analogWrite (IR_SEND_PIN, ((pwmRange+1) >> 1));							// (PWMRANGE >> 1) PWMRANGE divise par 2 => 50% de PWMRANGE, Half periodic time
-	//delayMicroseconds(time);												// the largest value that will produce an accurate delay is 16383 !!
-	custom_delay_usec(time);
-*/
-
-// Version 2
-  // Sends an IR mark for the specified number of microseconds.
-  // The mark output is modulated at the PWM frequency.
+	// Sends an IR mark for the specified number of microseconds.
+ 	// The mark output is modulated at the PWM frequency.
 	unsigned long start = micros();
 	unsigned long endMicros = start + time;
 	while (micros() < endMicros) {
@@ -75,10 +50,6 @@ void IrTransceiver :: mark (uint16_t time)
 		delayMicroseconds (_halfPeriodicTime);
 	}
 
-#else
-	TIMER_ENABLE_PWM; 														// For Arduino Enable pin 3 PWM output
-	//delayMicroseconds(time);												// the largest value that will produce an accurate delay is 16383 !!
-	custom_delay_usec(time);
 #endif
 }
 
@@ -92,8 +63,6 @@ void IrTransceiver :: space (uint16_t time)
 #ifdef ESP8266
 	analogWrite (_sendPin, 0);
 	digitalWrite(_sendPin, LOW);
-#else
-	TIMER_DISABLE_PWM; 														// For Arduino Disable pin 3 PWM output
 #endif
 	//delayMicroseconds(time);
 	custom_delay_usec(time);
@@ -101,15 +70,6 @@ void IrTransceiver :: space (uint16_t time)
 
 //========================================================================================================================
 // Enables IR output.  The khz value controls the modulation frequency in kilohertz.
-// The IR output will be on pin 3 (OC2B).
-// This routine is designed for 36-40KHz; if you use it for other values, it's up to you
-// to make sure it gives reasonable results.  (Watch out for overflow / underflow / rounding.)
-// TIMER2 is used in phase-correct PWM mode, with OCR2A controlling the frequency and OCR2B
-// controlling the duty cycle.
-// There is no prescaling, so the output frequency is 16MHz / (2 * OCR2A)
-// To turn the output on and off, we leave the PWM running, but connect and disconnect the output pin.
-// A few hours staring at the ATmega documentation and this will all make sense.
-// See my Secrets of Arduino PWM at http://arcfn.com/2009/07/secrets-of-arduino-pwm.html for details.
 //========================================================================================================================
 void IrTransceiver :: enableIROut (int khz)
 {
@@ -120,40 +80,10 @@ void IrTransceiver :: enableIROut (int khz)
 	analogWrite (_sendPin, 0);
 	digitalWrite (_sendPin, LOW);
 
-	// --------------------------------- Analog output ---------------------------------------------
-	// analogWrite(pin, value) enables software PWM on the given pin. PWM may be used on pins 0 to 16.
-	// Call analogWrite(pin, 0) to disable PWM on the pin. value may be in range from 0 to PWMRANGE,
-	// which is equal to 1023 by default. PWM range may be changed by calling analogWriteRange(new_range).
-	// PWM frequency is 1kHz by default. Call analogWriteFreq(new_frequency) to change the frequency.
-	//
-	// You can set the PWM-frequency higher or lower if you wish with AnalogWriteFreq(), but if you set
-	// it to 10KHz or more you should drop range to 8-bit values to speed the code up, ie. AnalogWriteRange(255)
-
-	// https://github.com/StefanBruens/ESP8266_new_pwm
-
-// Version 1
-/*	analogWriteRange (pwmRange);
-	analogWriteFreq (khz * 1000); 											// PWM frequency is 1kHz by default
-*/
-
-// Version 2
 	// The khz value controls the modulation frequency in kilohertz.
 	// T = 1/f but we need T/2 in microsecond and f is in kHz
 	_halfPeriodicTime = 500 / khz;
 
-#else
-	// Disable the Timer2 Interrupt (which is used for receiving IR)
-	TIMER_DISABLE_INTR; 													// Timer2 Overflow Interrupt
-
-	pinMode(_sendPin, OUTPUT);
-	digitalWrite(_sendPin, LOW);											// When not sending PWM, we want it low
-
-	// COM2A = 00: disconnect OC2A
-	// COM2B = 00: disconnect OC2B; to send signal set to 10: OC2B non-inverted
-	// WGM2 = 101: phase-correct PWM with OCRA as top
-	// CS2  = 000: no prescaling
-	// The top value for the timer.  The modulation frequency will be SYSCLOCK / 2 / OCR2A.
-	TIMER_CONFIG_KHZ(khz);
 #endif
 }
 
