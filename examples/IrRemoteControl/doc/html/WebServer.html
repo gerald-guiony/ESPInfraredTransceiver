@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 
+<!--
 //- Symbols des buttons												: http://emojipedia.org/symbols/
 //- Icon de la page HTML											: http://faviconit.com/fr, http://www.motobit.com/util/base64-decoder-encoder.asp
 //- Ajax															: http://startingelectronics.org/tutorials/arduino/ethernet-shield-web-server-tutorial/web-server-read-switch-using-AJAX/
@@ -9,7 +9,7 @@
 -->
 <html>
 	<head>
-		<!-- Trop lourd...
+		<!-- Too heavy...
 		<link href="data:image/x-icon;base64,
 		iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAFzUkdC
 		AK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE
@@ -53,16 +53,16 @@
 		RVh0anBlZzpzYW1wbGluZy1mYWN0b3IAMXgxLDF4MSwxeDHplfxwAAAAAElFTkSuQmCC"
 		rel="icon" type="image/x-icon" />
 		-->
-		
+
 		<meta name="Author" content="Gérald Guiony">
 		<meta name="Copyright" content="© Gérald Guiony - tous droits réservés">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta id="viewport" name="viewport">
-		
+
 		<title>IOT Remote Control</title>
-		
+
 		<script type="text/javascript">
-		
+
 			/*
 			// Get Browser-Specifc Prefix
 			function GetBrowserPrefix()
@@ -78,7 +78,7 @@
 				// Unprefixed property or the API is not supported in browser.
 				return '';
 			}
- 
+
 			function OnVisibility()
 			{
 				var prefix = GetBrowserPrefix();
@@ -90,29 +90,29 @@
 				});
 			}
 			*/
-		
+
 			function SetViewport(minWidth)
 			{
 				var windWidth = (window.screen.width < window.screen.height) ? window.screen.width : window.screen.height;
 				var ratio = windWidth / minWidth;
 				document.getElementById('viewport').setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio +', user-scalable=no, width=' + minWidth);
 			}
-		
+
 			function Substring(str, strStart, strEnd)
 			{
-				var start = str.indexOf(strStart); 
+				var start = str.indexOf(strStart);
 				var end = str.substring(start).indexOf(strEnd) + start;
 				if ((start >= 0) && (start < end)) {
 					return str.substring(start + strStart.length, end);
 				}
 				return '';
 			}
-			
+
 			function GetParamValueInString(str, param)
 			{
 				return Substring(str, param + '=', ';');
 			}
-			
+
 			function PurgeCommentsInString(str)
 			{
 				var result = str;
@@ -123,7 +123,7 @@
 				}
 				return result;
 			}
-			
+
 			function HighlightBackground(buttonClicked)
 			{
 				if (document.getElementById('slideRecord').checked)
@@ -131,7 +131,7 @@
 				else
 					document.bgColor = buttonClicked ? 'Lightblue':'Lightgrey';
 			}
-			
+
 			function DisableRemoteControl(disableIt)
 			{
 				var inputs = document.getElementsByTagName("input");
@@ -143,12 +143,12 @@
 					buttons[i].disabled = disableIt;
 				}
 			}
-			
+
 			function RefreshRemoteControlMessage(msg)
 			{
 				document.getElementById("info_txt").innerHTML = msg;
 			}
-			
+
 			function BuildQueryString(queryString)
 			{
 				return queryString + "?nocache=" + Math.random() * 1000000;
@@ -164,8 +164,8 @@
 					return false;
 				}
 				ajaxRequest.timeout = 25000;
-				ajaxRequest.ontimeout = function () { 
-					onTimeoutCallback(ajaxRequest); 
+				ajaxRequest.ontimeout = function () {
+					onTimeoutCallback(ajaxRequest);
 				}
 				ajaxRequest.onload = function() {
 					onSuccessCallback(ajaxRequest);
@@ -173,14 +173,14 @@
 				ajaxRequest.open("GET", queryString, true);
 				ajaxRequest.send(null);
 			}
-			
+
 			function TimeoutRemoteControlCallback(ajaxRequest)
 			{
 				HighlightBackground(false);
 				DisableRemoteControl(false);
 				RefreshRemoteControlMessage("No response from the IOT remote control! Timed out..");
 			}
-			
+
 			function RefreshRemoteControlCallback(ajaxRequest)
 			{
 				if (ajaxRequest.readyState == 4) {
@@ -206,19 +206,19 @@
 					}
 				}
 			}
-			
+
 			function RefreshRemoteControl()
 			{
 				SendAjaxRequest(BuildQueryString("ajax_RefreshRemoteControl"), RefreshRemoteControlCallback, TimeoutRemoteControlCallback);
 			}
-			
+
 			function OnRemoteControlButtonClick(numButton)
 			{
 				HighlightBackground(true);
 				DisableRemoteControl(true);
-				
+
 				RefreshRemoteControlMessage("Please wait...");
-			
+
 				setTimeout(function(){
 					var queryString = BuildQueryString("ajax_OnRemoteControlButtonClick");
 					queryString += "&numbutton=" + numButton;
@@ -226,11 +226,11 @@
 					SendAjaxRequest(queryString, RefreshRemoteControlCallback, TimeoutRemoteControlCallback);
 				}, 1000);
 			}
-			
+
 			function OnRemoteControlSlideClick()
 			{
 				HighlightBackground(false);
-			
+
 				if (document.getElementById('slideRecord').checked) {
 					DisableRemoteControl(true);
 					SendAjaxRequest(BuildQueryString("ajax_OnRemoteControlSlideClick"), RefreshRemoteControlCallback, TimeoutRemoteControlCallback);
@@ -239,16 +239,16 @@
 					RefreshRemoteControlMessage("");
 				}
 			}
-			
-			function Timer() 
+
+			function Timer()
 			{
 				var dt=new Date()
 				document.getElementById("monHorloge").innerHTML=dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
 				setTimeout("Timer()", 1000);
 			}
-			
+
 		</script>
-		
+
 		<style type="text/css">
 
 			body{
@@ -256,12 +256,12 @@
 				font-family: Arial, Georgia, sans-serif;
 				font-weight: normal;
 			}
-			
+
 			table.remoteControl{
 				background-color: White;
 				background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
 				background-image: linear-gradient(top, #fff, #f4f1ee);
-				border-spacing: 6px 6px; 
+				border-spacing: 6px 6px;
 				border-radius: 40px;
 				box-shadow: 0px 4px 6px 0px rgba(0,0,0,.3), inset 0px 2px 1px 1px white, inset 0px -2px 1px 1px rgba(204,198,197,.5);
 				color: #0088cc;
@@ -272,7 +272,7 @@
 				background-color: White;
 				background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
 				background-image: linear-gradient(top, #fff, #f4f1ee);
-				border-spacing: 2px 2px; 
+				border-spacing: 2px 2px;
 				border-radius: 40px;
 				box-shadow: inset 0px 2px 1px 1px rgba(204,198,197,.5), inset 0px -2px 1px 1px white;
 				color: #0088cc;
@@ -281,7 +281,7 @@
 			}
 			tr{border: 0px solid #000000;}
 			th{border: 0px solid #000000; width: 100px; height: 100px;}
-			
+
 			textarea{
 				background-color: LightYellow;
 				border: 4px inset lightblue;
@@ -298,7 +298,7 @@
 				vertical-align: middle;
 				width: 350px;
 			}
-			
+
 			button{
 				background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
 				background-image: linear-gradient(top, #f4f1ee, #fff);
@@ -326,7 +326,7 @@
 				background-image: linear-gradient(top, #efedec, #f7f4f4);
 				box-shadow: 0 2px 3px 0 rgba(0,0,0,.4), inset 0px -2px 1px 1px rgba(204,198,197,.5);
 			}
-			
+
 			div.checkBoxSlide {
 				background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
 				background-image: linear-gradient(top, #f4f1ee, #fff);
@@ -381,12 +381,12 @@
 				left: 58px;
 			}
 			p.checkBoxSlideLabel{
-				color: #0088cc; 
+				color: #0088cc;
 				font-size: 1.2em;
 				font-weight: normal;
 				margin: 4px 4px 4px 4px;
 			}
-			
+
 		</style>
 	</head>
 
