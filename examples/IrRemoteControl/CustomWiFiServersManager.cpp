@@ -35,15 +35,7 @@ SINGLETON_IMPL (CustomWiFiServersManager)
 //========================================================================================================================
 void CustomWiFiServersManager :: startCustomServers () {
 
-//	if (WiFiHelper::isAccessPointMode()) {
-
-		// Add the administrative commands request handler
-		// Only when the device is in Access Point mode (not connected to Wifi)
-		// IP address is 192.168.4.1 no password and the IP port is fixed and the same for all esp
-		I(HttpServer).addRequestHandlers( { &I(HttpAdminCommandRequestHandler) } );
-//	}
-
-	I(HttpServer).addRequestHandlers( { &I(HttpIrCommandRequestHandler), &I(HttpIrRemoteControlRequestHandler) } );
+	I(HttpServer).addRequestHandlers( { &I(HttpAdminCommandRequestHandler), &I(HttpIrCommandRequestHandler), &I(HttpIrRemoteControlRequestHandler) } );
 
 	// Start the Web Server
 	I(HttpServer).setup ();

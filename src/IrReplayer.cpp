@@ -16,18 +16,18 @@ SINGLETON_IMPL (IrReplayer)
 //========================================================================================================================
 bool IrReplayer :: recordSignal (Print & out, IRPACKET & irPacket) {
 
-	setModulesPower(true);
+	EspBoard::setPortPower(true);
 	{
 		_irTransceiver->recordRaw (irPacket);
 	}
-	setModulesPower(false);
+	EspBoard::setPortPower(false);
 
 	if (irPacket.length < 1) {
 		out << F("No captured InfraRed signal, please try again") << LN;
 		return false;
 	}
 
-	blinkStatus (irPacket.length / 50);
+	EspBoard::blinks (irPacket.length / 50);
 
 	out << F("SUCCESS! InfraRed signal captured (") << irPacket.length << " words)" << LN;
 	return true;
@@ -40,15 +40,15 @@ bool IrReplayer :: emmitSignal (Print & out, IRPACKET & irPacket) {
 
 	if (irPacket.length > 0) {
 
-		setModulesPower(true);
+		EspBoard::setPortPower(true);
 		{
 			// Assume 38 KHz
 			_irTransceiver->sendRaw (irPacket, 38);
 		}
-		setModulesPower(false);
+		EspBoard::setPortPower(false);
 
 		// Visual indicator that signal sent
-		blinkStatus (irPacket.length / 50);
+		EspBoard::blinks (irPacket.length / 50);
 
 		out << F("InfraRed signal sent (") << irPacket.length << " words)" << LN;
 	}
