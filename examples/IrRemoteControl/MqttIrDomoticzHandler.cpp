@@ -13,11 +13,15 @@
 
 #include "Settings.h"
 
+using namespace infrax;
+
 
 // Todo :
 // - Ajouter les paramètres du serveur mqtt (Ip, Port..) a la page du wifimanager
 // https://github.com/tzapu/WiFiManager/blob/master/examples/AutoConnectWithFSParameters/AutoConnectWithFSParameters.ino
 
+
+namespace wifix {
 
 
 SINGLETON_IMPL (MqttIrDomoticzPublisher)
@@ -94,4 +98,6 @@ bool MqttIrDomoticzSubscriber :: parseJsonObj	(const JsonObject& jsonArg) {
 	}
 
 	return false;
+}
+
 }

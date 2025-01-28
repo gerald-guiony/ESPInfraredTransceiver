@@ -15,6 +15,8 @@
 #include "MqttIrDomoticzHandler.h"
 #include "HttpIrCommandRequestHandler.h"
 
+using namespace infrax;
+
 
 // Important things to remember
 // ----------------------------
@@ -57,6 +59,9 @@ static const char PROGMEM PRINT_HELP[] = R"rawliteral(
 ===========================================================================================================
 )rawliteral";
 
+
+
+namespace wifix {
 
 
 //inline Print & operator <<(Print & printer, JsonObject & jsonObj) { jsonObj.printTo(printer); return printer; }
@@ -382,8 +387,7 @@ void HttpIrCommandRequestHandler :: setup (AsyncWebServer & asyncWebServer)
 	asyncWebServer.on("/ir/printids",	std::bind(&HttpIrCommandRequestHandler::handlePrintIdList,	this, _1));
 }
 
-
-
+}
 
 
 

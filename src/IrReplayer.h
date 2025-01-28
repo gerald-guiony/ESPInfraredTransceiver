@@ -13,6 +13,8 @@
 #include "IrTransceiver.h"
 
 
+namespace infrax {
+
 //------------------------------------------------------------------------------
 // WARNING : SINGLETON !!!!
 class IrReplayer
@@ -40,3 +42,4 @@ public:
 };
 
 
+}

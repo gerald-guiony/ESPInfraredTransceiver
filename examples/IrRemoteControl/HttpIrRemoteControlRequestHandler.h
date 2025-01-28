@@ -13,6 +13,9 @@
 
 #define DEFAULT_REFRESH_TIMEOUT				3000
 
+
+namespace wifix {
+
 //------------------------------------------------------------------------------
 // WARNING : SINGLETON !!!!
 class HttpIrRemoteControlRequestHandler : public HttpRequestHandler
@@ -31,3 +34,5 @@ private:
 public:
 	virtual void setup 						(AsyncWebServer & asyncWebServer) override;
 };
+
+}

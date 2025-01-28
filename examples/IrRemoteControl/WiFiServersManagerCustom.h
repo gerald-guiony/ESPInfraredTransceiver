@@ -1,5 +1,5 @@
 //************************************************************************************************************************
-// CustomWiFiServersManager.h
+// WiFiServersManagerCustom.h
 // Version 1.0 June, 2017
 // Author Gerald Guiony
 //************************************************************************************************************************
@@ -10,19 +10,19 @@
 #include <WiFiServersManager.h>
 
 
+namespace wifix {
+
 //------------------------------------------------------------------------------
-// WARNING : SINGLETON !!!!
-class CustomWiFiServersManager : public WiFiServersManager
+// Singleton
+class WiFiServersManagerCustom : public WiFiServersManager
 {
-	SINGLETON_CLASS(CustomWiFiServersManager)
+	SINGLETON_CLASS(WiFiServersManagerCustom)
 
 protected:
 
+	virtual void setupCustomServers			() override;
 	virtual void startCustomServers			() override;
 	virtual void stopCustomServers			() override;
-
-public:
-
-	virtual void setup						(bool forceAccessPoint = false) override;
-	virtual void loop						() override;
 };
+
+}

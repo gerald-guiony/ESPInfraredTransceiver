@@ -28,6 +28,8 @@
 #define PRINT_IR_RAW_END					"]"
 
 
+namespace infrax {
+
 /**
  * Class: IRPACKET
  *
@@ -48,3 +50,5 @@ private:
     virtual size_t printTo		(Print & p) const override;
     bool parse 					(Stream & stream, Print & out);
 };
+
+}

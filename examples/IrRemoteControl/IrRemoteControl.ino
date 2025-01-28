@@ -10,8 +10,11 @@
 #include <IrReplayer.h>
 
 #include "Settings.h"
-#include "CustomWiFiServersManager.h"
+#include "WiFiServersManagerCustom.h"
 
+using namespace corex;
+using namespace wifix;
+using namespace infrax;
 
 //========================================================================================================================
 //
@@ -26,18 +29,19 @@ void setup() {
 
 	I(IrReplayer).setup (IR_SEND_PIN, IR_RECV_PIN);
 
-	I(CustomWiFiServersManager).setWifiManagerEnabled (!EspBoard::isWakeUpFromDeepSleep());		// If WakeUpFromDeepSleep => No WifiManager & No Ap Mode
-	I(CustomWiFiServersManager).setup();
+	// If WakeUpFromDeepSleep => No WifiManager & No Ap Mode
+	I(WiFiServersManagerCustom).setWifiManagerEnabled (!EspBoard::isWakeUpFromDeepSleep());	
+	I(WiFiServersManagerCustom).setup();
 
-	// ------------- Connect notifiers
+	// ------------- Connect signals
 
 	I(HttpServer).notifyRequestReceived	+= std::bind (&ModuleSequencer::requestWakeUp, &I(ModuleSequencer));
 #ifdef USING_MQTT
 	I(MqttClient).notifyValidMessageParsed += std::bind (&ModuleSequencer::requestWakeUp, &I(ModuleSequencer));
 #endif
 
-	I(ModuleSequencer).enterDeepSleepWhenWifiOff ();											// Deep sleep
-	I(ModuleSequencer).setup ({ &I(CustomWiFiServersManager) });
+	I(ModuleSequencer).enterDeepSleepWhenWifiOff ();
+	I(ModuleSequencer).setup ({ &I(WiFiServersManagerCustom) });
 }
 
 //========================================================================================================================

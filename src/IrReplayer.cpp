@@ -6,10 +6,12 @@
 
 #include "IrReplayer.h"
 
+using namespace corex;
 
+
+namespace infrax {
 
 SINGLETON_IMPL (IrReplayer)
-
 
 //========================================================================================================================
 //
@@ -68,8 +70,7 @@ void IrReplayer :: setup (uint8_t sendPin, uint8_t recvPin) {
 	_irTransceiver = new IrTransceiver (sendPin, recvPin);
 }
 
-
-
+}
 
 
 

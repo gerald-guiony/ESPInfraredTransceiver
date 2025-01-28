@@ -17,6 +17,7 @@
 
 #define IR_CAPTURE_DELAY_MS		5000		// you may increase this value for long ir signal
 
+namespace infrax {
 
 //------------------------------------------------------------------------------
 class IrTransceiver
@@ -43,7 +44,7 @@ public:
 };
 
 
-
+}
 
 
 

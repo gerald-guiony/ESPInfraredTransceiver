@@ -10,9 +10,6 @@
 //------------------------------------------------------------------------------
 //
 
-// Add Wifi request handlers
-#define USING_WIFI
-
 // Add MQTT subscriber & publisher
 #define USING_MQTT
 

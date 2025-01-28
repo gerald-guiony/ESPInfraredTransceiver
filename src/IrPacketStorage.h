@@ -14,6 +14,8 @@
 #define IR_EXT_NAMEFILE						".dat"
 
 
+namespace infrax {
+
 //------------------------------------------------------------------------------
 // WARNING : SINGLETON !!!!
 class IrPacketStorage
@@ -28,6 +30,7 @@ public:
 	String	getList								();
 };
 
+}
 
 
 

@@ -11,6 +11,8 @@
 #include <Common.h>
 #include <HttpRequestHandler.h>
 
+namespace wifix {
+
 //------------------------------------------------------------------------------
 // WARNING : SINGLETON !!!!
 class HttpIrCommandRequestHandler : public HttpRequestHandler
@@ -34,7 +36,7 @@ public:
 	virtual void setup 								(AsyncWebServer & asyncWebServer) override;
 };
 
-
+}
 
 
 

@@ -6,10 +6,12 @@
 
 #include "IrPacketStorage.h"
 
+using namespace corex;
 
+
+namespace infrax {
 
 SINGLETON_IMPL (IrPacketStorage)
-
 
 //========================================================================================================================
 //
@@ -122,3 +124,4 @@ String IrPacketStorage :: getList ()
 	return result;
 }
 
+}

@@ -9,6 +9,7 @@
 #include <Common.h>
 #include <MqttDomoticzHandler.h>
 
+namespace wifix {
 
 //------------------------------------------------------------------------------
 // Singleton
@@ -31,7 +32,7 @@ public:
 	virtual bool parseJsonObj			(const JsonObject& jsonObj) override;
 };
 
-
+}
 
 
 

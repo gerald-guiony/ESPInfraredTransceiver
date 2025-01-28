@@ -10,7 +10,10 @@
 
 #include "IrPacket.h"
 
+using namespace corex;
 
+
+namespace infrax {
 
 //========================================================================================================================
 //
@@ -133,4 +136,6 @@ bool IRPACKET :: parse (Stream & stream, Print & out) {
 ERROR:
 	length = 0;
 	return false;
+}
+
 }
