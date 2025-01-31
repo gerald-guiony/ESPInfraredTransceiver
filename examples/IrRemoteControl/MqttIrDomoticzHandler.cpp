@@ -35,10 +35,8 @@ size_t MqttIrDomoticzPublisher :: publishStatutMessage (const String & msg) {
 	static const String msgHeader = "[" + EspBoard::getDeviceName() + "] ";
 	String custom_msg = msgHeader + msg;
 
-	return publishMessage (REMOTE_MQTT_LOG_IDX, custom_msg);
+	return publishMessage (MQTT_DOMOTICZ_LOG_IDX, custom_msg);
 }
-
-
 
 
 /************************************************************************************************************************/
@@ -46,11 +44,19 @@ size_t MqttIrDomoticzPublisher :: publishStatutMessage (const String & msg) {
 
 SINGLETON_IMPL (MqttIrDomoticzSubscriber)
 
+//========================================================================================================================
+//
+//========================================================================================================================
+void MqttIrDomoticzSubscriber :: setup (AsyncMqttClient * asyncMqttClient) {
+
+	_idx = MQTT_DOMOTICZ_DAIKIN_SWITCH_IDX;
+	MqttDomoticzSubscriberIdx :: setup (asyncMqttClient);
+}
 
 //========================================================================================================================
 //
 //========================================================================================================================
-bool MqttIrDomoticzSubscriber :: parseJsonObj	(const JsonObject& jsonArg) {
+bool MqttIrDomoticzSubscriber :: onMqttMsgReceivedIdx (const JsonObject& jsonArg) {
 
 	// domoticz/out {
 		// "Battery" : 255,
@@ -67,33 +73,26 @@ bool MqttIrDomoticzSubscriber :: parseJsonObj	(const JsonObject& jsonArg) {
 		// "unit" : 1
 	// }
 
+
 	// décode le message - decode payload message
+	// Here we know that the _idx member value matches the idx of the domoticz device
 
-	if (jsonArg [PAYLOAD_IDX].success()) {
+	if (jsonArg [PAYLOAD_NVALUE].success()) {
 
-		int idx = jsonArg [PAYLOAD_IDX];
+		// Détermine quel code IR doit être envoyé - Determines which IR signal should be sent
+		int fileId = (jsonArg [PAYLOAD_NVALUE] == 1) ? 1 : 2;
 
-		// Process message
-		if (idx == REMOTE_DAIKIN_SWITCH_IDX) {
+		if (I(IrReplayer).loadSignal (fileId)) {
 
-			if (jsonArg [PAYLOAD_NVALUE].success()) {
+			StreamString sstrLogOut;
+			I(IrReplayer).emmitSignal (sstrLogOut);
 
-				// Détermine quel code IR doit être envoyé - Determines which IR signal should be sent
-				int fileId = (jsonArg [PAYLOAD_NVALUE] == 1) ? 1 : 2;
+			// Response
+			I(MqttIrDomoticzPublisher).publishStatutMessage (((fileId == 1) ? "Daikin On":"Daikin Off"));
 
-				if (I(IrReplayer).loadSignal (fileId)) {
+			Log (sstrLogOut);
 
-					StreamString sstrLogOut;
-					I(IrReplayer).emmitSignal (sstrLogOut);
-
-					// Response
-					I(MqttIrDomoticzPublisher).publishStatutMessage (((fileId == 1) ? "Daikin On":"Daikin Off"));
-
-					Log (sstrLogOut);
-
-					return true;
-				}
-			}
+			return true;
 		}
 	}
 

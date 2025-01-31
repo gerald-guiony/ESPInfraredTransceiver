@@ -24,12 +24,14 @@ public:
 
 //------------------------------------------------------------------------------
 // Singleton
-class MqttIrDomoticzSubscriber : public MqttDomoticzSubscriber
+class MqttIrDomoticzSubscriber : public MqttDomoticzSubscriberIdx
 {
 	SINGLETON_CLASS(MqttIrDomoticzSubscriber)
 
 public:
-	virtual bool parseJsonObj			(const JsonObject& jsonObj) override;
+
+	virtual void setup 					(AsyncMqttClient * asyncMqttClient) override;
+	virtual bool onMqttMsgReceivedIdx	(const JsonObject& jsonObj) override;
 };
 
 }

@@ -12,7 +12,6 @@
 
 #include <HttpServer.h>
 
-#include "MqttIrDomoticzHandler.h"
 #include "HttpIrCommandRequestHandler.h"
 
 using namespace infrax;
@@ -146,9 +145,7 @@ void HttpIrCommandRequestHandler :: handleEmmit (AsyncWebServerRequest * request
 		}
 
 		// deserialize ir signal in memory
-		if (I(IrReplayer).loadSignal (fileId)) {
-			I(MqttIrDomoticzPublisher).publishStatutMessage (((fileId == 1) ? "Daikin On":"Daikin Off"));
-		}
+		I(IrReplayer).loadSignal (fileId);
 	}
 
 	// This way of sending Json is great for when the result is below 4KB

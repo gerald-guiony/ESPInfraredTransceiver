@@ -1,5 +1,5 @@
 //************************************************************************************************************************
-// WiFiServersManagerCustom.h
+// WiFiLinksManagerCustom.h
 // Version 1.0 June, 2017
 // Author Gerald Guiony
 //************************************************************************************************************************
@@ -7,22 +7,19 @@
 #pragma once
 
 #include <Common.h>
-#include <WiFiServersManager.h>
+#include <WiFiLinksManager.h>
 
 
 namespace wifix {
 
 //------------------------------------------------------------------------------
 // Singleton
-class WiFiServersManagerCustom : public WiFiServersManager
+class WiFiLinksManagerCustom : public WiFiLinksManager
 {
-	SINGLETON_CLASS(WiFiServersManagerCustom)
+	SINGLETON_CLASS(WiFiLinksManagerCustom)
 
 protected:
-
-	virtual void setupCustomServers			() override;
-	virtual void startCustomServers			() override;
-	virtual void stopCustomServers			() override;
+	virtual void setupCustomLinks	() override;
 };
 
 }

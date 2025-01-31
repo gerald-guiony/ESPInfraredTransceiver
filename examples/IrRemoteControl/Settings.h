@@ -11,7 +11,7 @@
 //
 
 // Add MQTT subscriber & publisher
-#define USING_MQTT
+#define USING_DOMOTICZ_MQTT
 
 
 //------------------------------------------------------------------------------
@@ -19,8 +19,6 @@
 //
 
 #include <EspBoardDefs.h>
-
-
 
 #ifdef ARDUINO_ESP8266_WIO_NODE
 
@@ -50,9 +48,9 @@
 // Domoticz MQTT
 //
 
-#define MQTT_SERVER_IP			"192.168.1.138"		// IP Broker MQTT
-#define MQTT_SERVER_PORT		1883				// Port Broker MQTT
+#define MQTT_DOMOTICZ_ENDPOINT			"192.168.1.138"		// IP Broker MQTT
+#define MQTT_DOMOTICZ_PORT				1883				// Port Broker MQTT
 
 // Daikin component
-#define REMOTE_DAIKIN_SWITCH_IDX 	1
-#define REMOTE_MQTT_LOG_IDX			17
+#define MQTT_DOMOTICZ_DAIKIN_SWITCH_IDX 1
+#define MQTT_DOMOTICZ_LOG_IDX			17
