@@ -2,7 +2,7 @@
 
 [![ESP8266](https://img.shields.io/badge/ESP-8266-000000.svg?longCache=true&style=flat&colorA=CC101F)](https://www.espressif.com/en/products/socs/esp8266)
 
-ESPInfraredTransceiver is a C++ library for the Arduino Core designed for the ESP8266 board, enabling the transmission and reception of any InfraRed signals.
+ESPInfraredTransceiver is a C++ library for the Arduino Core designed for the ESP8266 board, allowing the transmission and reception of any InfraRed signals.
 
 This library is compatible with any infrared signal because it simply records and replays infrared signals, 
 there is no protocol analysis like with [this other library](https://github.com/Arduino-IRremote/Arduino-IRremote/tree/master)
