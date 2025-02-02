@@ -21,9 +21,9 @@ To use ESPInfraredTransceiver, you will need:
 1. Download the latest master source code as a [.zip](https://github.com/gerald-guiony/ESPInfraredTransceiver/archive/master.zip) file
 2. In the Arduino IDE, import the `.zip` file by navigating to **Sketch → Include Library → Add .ZIP Library**
 
-## Dependencies
+## Prerequisites
 
-To compile this library you must have the latest version of [ESPCoreExtension library](https://github.com/gerald-guiony/ESPCoreExtension)
+To build this library you must have the latest version of [ESPCoreExtension library](https://github.com/gerald-guiony/ESPCoreExtension)
 
 ## Example
 
