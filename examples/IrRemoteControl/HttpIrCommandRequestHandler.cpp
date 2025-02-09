@@ -362,7 +362,7 @@ void HttpIrCommandRequestHandler :: handlePrintIdList (AsyncWebServerRequest * r
 	JsonObject& jsonRsp = jsonBuffer.createObject();
 
 	jsonRsp["command"] = "printids";
-	jsonRsp["id list"] = I(IrPacketStorage).getList();
+	jsonRsp["id list"] = I(IrPacketStorage).printIdList();
 
 	jsonRsp.prettyPrintTo(*response);
 	request->send(response);

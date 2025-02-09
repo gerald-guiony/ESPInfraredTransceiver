@@ -10,7 +10,7 @@
 
 #include "IrPacket.h"
 
-#define IR_HEADER_NAMEFILE					"/Ir"
+#define IR_HEADER_NAMEFILE					"Ir"
 #define IR_EXT_NAMEFILE						".dat"
 
 
@@ -27,7 +27,7 @@ public:
 	bool 	read								(uint8_t fileId, IRPACKET & irPacket);
 	bool	write								(uint8_t fileId, const IRPACKET & irPacket);
 	bool	remove								(uint8_t fileId);
-	String	getList								();
+	String	printIdList							();
 };
 
 }
