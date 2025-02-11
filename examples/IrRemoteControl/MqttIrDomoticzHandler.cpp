@@ -56,7 +56,7 @@ void MqttIrDomoticzSubscriber :: setup (AsyncMqttClient * asyncMqttClient) {
 //========================================================================================================================
 //
 //========================================================================================================================
-bool MqttIrDomoticzSubscriber :: onMqttMsgReceivedIdx (const JsonObject& jsonArg) {
+bool MqttIrDomoticzSubscriber :: onTopicIdxReceived (const JsonObject& jsonArg) {
 
 	// domoticz/out {
 		// "Battery" : 255,

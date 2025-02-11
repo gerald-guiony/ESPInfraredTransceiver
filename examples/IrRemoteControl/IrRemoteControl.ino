@@ -5,12 +5,16 @@
 //************************************************************************************************************************
 
 #include <Common.h>
-#include <HttpServer.h>
-#include <MqttDomoticzClient.h>
 #include <IrReplayer.h>
+#include <HttpServer.h>
+#include <HttpAdminCommandRequestHandler.h>
+#include <MqttDomoticzClient.h>
+#include <WiFiConnectionManager.h>
 
 #include "Settings.h"
-#include "WiFiLinksManagerCustom.h"
+#include "HttpIrCommandRequestHandler.h"
+#include "HttpIrRemoteControlRequestHandler.h"
+#include "MqttIrDomoticzHandler.h"
 
 using namespace corex;
 using namespace wifix;
@@ -25,23 +29,35 @@ void setup() {
 
 	EspBoard::init ();
 
-	// ------------- setup
+	// ------------- Connect signals
+
+	I(HttpServer).notifyRequestReceived	+= std::bind (&ModuleSequencer::requestWakeUp, &I(ModuleSequencer));
+	I(MqttDomoticzClient).notifyValidTopicReceived += std::bind (&ModuleSequencer::requestWakeUp, &I(ModuleSequencer));
+
+	// ------------- Module sequencer
+
+	I(ModuleSequencer).enterDeepSleepWhenWifiOff ();
+
+	// ------------- Setup
 
 	I(IrReplayer).setup (IR_SEND_PIN, IR_RECV_PIN);
 
 	// If WakeUpFromDeepSleep => No WifiManager & No Ap Mode
-	I(WiFiLinksManagerCustom).setWifiManagerEnabled (!EspBoard::isWakeUpFromDeepSleep());
-	I(WiFiLinksManagerCustom).setup();
+	I(WiFiConnectionManager).setWifiManagerEnabled (!EspBoard::isWakeUpFromDeepSleep());
+	I(WiFiConnectionManager).notifySetupWifiConnections += []() {
 
-	// ------------- Connect signals
+		I(HttpServer).setup ({ 	&I(HttpAdminCommandRequestHandler),
+								&I(HttpIrCommandRequestHandler),
+								&I(HttpIrRemoteControlRequestHandler) });
 
-	I(HttpServer).notifyRequestReceived	+= std::bind (&ModuleSequencer::requestWakeUp, &I(ModuleSequencer));
-#ifdef USING_DOMOTICZ_MQTT
-	I(MqttDomoticzClient).notifyValidMessageReceived += std::bind (&ModuleSequencer::requestWakeUp, &I(ModuleSequencer));
-#endif
+		I(MqttDomoticzClient).setup (MQTT_DOMOTICZ_ENDPOINT, MQTT_DOMOTICZ_PORT, {	&I(MqttDomoticzLogPublisher),
+																					&I(MqttIrDomoticzPublisher),
+																					&I(MqttIrDomoticzSubscriber) });
+	};
+	I(WiFiConnectionManager).setup ({	&I(HttpServer),
+								 		&I(MqttDomoticzClient) });
 
-	I(ModuleSequencer).enterDeepSleepWhenWifiOff ();
-	I(ModuleSequencer).setup (I(WiFiLinksManagerCustom).getModules ());
+	I(ModuleSequencer).setup (I(WiFiConnectionManager).getModules ());
 }
 
 //========================================================================================================================
